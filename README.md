@@ -27,6 +27,13 @@ python -B vis_camera.py
 ```
 
 
+## The KITTI label format
+| type | truncated | occluded | alpha | bbox | dimensions | location | rotation |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+| Car | 0.0 | 0 | 1.84 | 390.29 &thinsp; 181.00 &thinsp; 423.13 &thinsp; 201.74 | 1.47 &thinsp; 1.62 &thinsp; 4.07 | -16.19 &thinsp; 2.21 &thinsp; 57.39 | 1.57 |
+
+
 ## References
 1) [Are we ready for Autonomous Driving? The KITTI Vision Benchmark Suite](https://projet.liris.cnrs.fr/imagine/pub/proceedings/CVPR2012/data/papers/424_O3C-04.pdf)
 2) [Vision meets Robotics: The KITTI Dataset](https://www.cvlibs.net/publications/Geiger2013IJRR.pdf)
+3) [Convert to KITTI Format for Evaluation #23](https://github.com/skhadem/3D-BoundingBox/issues/23)
