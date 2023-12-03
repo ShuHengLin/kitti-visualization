@@ -26,7 +26,7 @@ points = scan[:, 0:3] # lidar xyz (front, left, up)
 velo = np.insert(points, 3, 1, axis=1).T
 velo = np.delete(velo, np.where(velo[0, :] < 0), axis=1)
 cam = P2.dot(R0_rect.dot(Tr_velo_to_cam.dot(velo)))
-cam = np.delete(cam,np.where(cam[2, :] < 0), axis=1)
+cam = np.delete(cam, np.where(cam[2, :] < 0), axis=1)
 
 # get u,v,z
 cam[:2] /= cam[2, :]

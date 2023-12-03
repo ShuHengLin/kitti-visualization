@@ -1,12 +1,12 @@
 import rospy
 import numpy as np
-from tqdm import tqdm
+
 from lib.utils_pointcloud import compute_box_3d, box_to_marker
 from lib.kitti_utils import Calibration
 
 import std_msgs.msg
 import sensor_msgs.point_cloud2 as pcl2
-from sensor_msgs.msg import PointCloud2
+from sensor_msgs.msg import PointCloud2, PointField
 
 from visualization_msgs.msg import Marker
 from visualization_msgs.msg import MarkerArray
@@ -15,22 +15,28 @@ marker_array = MarkerArray()
 
 # ==================================================================================================================
 
-name = '000010'
+header = std_msgs.msg.Header()
+header.frame_id = 'map'
+
+fields = [PointField(name='x', offset=0, datatype=PointField.FLOAT32, count=1),
+          PointField(name='y', offset=4, datatype=PointField.FLOAT32, count=1),
+          PointField(name='z', offset=8, datatype=PointField.FLOAT32, count=1),
+          PointField(name='intensity', offset=12, datatype=PointField.FLOAT32, count=1)]
 
 pointcloud_pub = rospy.Publisher('/pointcloud',   PointCloud2, queue_size=10)
 marker_pub     = rospy.Publisher('/detect_box3d', MarkerArray, queue_size=10)
 rospy.init_node('talker', anonymous=True)
 rate = rospy.Rate(1000)
 
-while not rospy.is_shutdown():
+# ==================================================================================================================
 
-  header = std_msgs.msg.Header()
-  header.stamp = rospy.Time.now()
-  header.frame_id = 'map'
+name = '000010'
+
+while not rospy.is_shutdown():
 
   # loading pointcloud
   scan = np.fromfile('/data_1TB_1/kitti/training/velodyne/' + name + '.bin', dtype=np.float32).reshape((-1, 4))
-  pointcloud_msg = pcl2.create_cloud_xyz32(header, scan[:, 0:3])
+  pointcloud_msg = pcl2.create_cloud(header, fields, scan)
 
   # loading calib
   calib = Calibration('/data_1TB_1/kitti/training/calib/' + name + '.txt', from_video=False)
